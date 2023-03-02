@@ -8,6 +8,7 @@ defines the interaction with paper rest api resource
 from os import path
 from typing import List
 import httpx
+from semantic_scholar_scraper.client.errors import HttpClientError
 
 from semantic_scholar_scraper.client.models import Paper
 
@@ -47,7 +48,20 @@ class PaperResource:
             "limit": 50,
             "fields": "title,authors",
         }
-        result = await self._client.get(resource_url, params=query_params)
+        try:
+            result = await self._client.get(resource_url, params=query_params)
+            if result.status_code >= 300:
+                if result.status_code == 429:
+                    raise HttpClientError(
+                        status_code=result.status_code,
+                        reason="api throttled the request, too many requests",
+                    )
+                raise HttpClientError(
+                    status_code=result.status_code,
+                    reason="error happened during the request",
+                )
+        except httpx.HTTPError as err:
+            raise HttpClientError(reason="status_code={e.statusCode}", client_error=err)
 
         print(result.text)
 

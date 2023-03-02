@@ -8,3 +8,6 @@ format:
 
 install_pre_commit:
 	poetry run pre-commit install
+
+live_test:
+	poetry run $(BIN_NAME) --term "gnn recommender system"

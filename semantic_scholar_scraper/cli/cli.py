@@ -3,6 +3,7 @@ import sys
 import click
 
 from semantic_scholar_scraper.cli.async_command import async_cmd
+from semantic_scholar_scraper.client.errors import HttpClientError
 from semantic_scholar_scraper.client.semantic_scholar_client import (
     SemanticScholarClient,
 )
@@ -48,4 +49,7 @@ async def search_by_term(
         html of the page
     """
     semantic_scholar_client = SemanticScholarClient()
-    await semantic_scholar_client.paper_resource.search_paper(search_terms=term)
+    try:
+        await semantic_scholar_client.paper_resource.search_paper(search_terms=term)
+    except HttpClientError as err:
+        logger.error(err.reason)
