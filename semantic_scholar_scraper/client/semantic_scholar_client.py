@@ -16,7 +16,7 @@ class SemanticScholarClient:
 
     def __init__(
         self,
-        base_url: str = "http://api.semanticscholar.org/graph/v1",
+        base_url: str = "https://api.semanticscholar.org/graph/v1",
     ):
         self._client = httpx.AsyncClient()
         self._base_url = base_url
