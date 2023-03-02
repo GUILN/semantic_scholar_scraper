@@ -2,12 +2,13 @@
 semantic scholar client to use public semanti scholar api: https://www.semanticscholar.org/product/api
 """
 
+import httpx
 from semantic_scholar_scraper.client.paper_resource import PaperResource
 
 
 class SemanticScholarClient:
     """
-    semantic scholar client to use public semanti scholar api: https://www.semanticscholar.org/product/api
+    semantic scholar client to use public semantic scholar api: https://www.semanticscholar.org/product/api
 
     constructor params:
         base_url(optional)
@@ -17,8 +18,11 @@ class SemanticScholarClient:
         self,
         base_url: str = "http://api.semanticscholar.org/graph/v1",
     ):
-        self._paper_resource = PaperResource()
+        self._client = httpx.AsyncClient()
         self._base_url = base_url
+        self._paper_resource = PaperResource(
+            base_url=self._base_url, client=self._client
+        )
 
     @property
     def paper_resource(self) -> PaperResource:

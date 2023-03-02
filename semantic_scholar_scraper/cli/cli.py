@@ -1,9 +1,11 @@
 import logging
 import sys
 import click
-import httpx
 
 from semantic_scholar_scraper.cli.async_command import async_cmd
+from semantic_scholar_scraper.client.semantic_scholar_client import (
+    SemanticScholarClient,
+)
 
 # creating logger
 logger = logging.getLogger(__name__)
@@ -45,23 +47,5 @@ async def search_by_term(
     returns:
         html of the page
     """
-    url = "https://www.semanticscholar.org/search"
-    params = {"q": term, "sort": "relevance"}
-    headers = {
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
-    }
-
-    async with httpx.AsyncClient() as client:
-        logger.info("firing the request...")
-        try:
-            response = await client.get(
-                url=url,
-                headers=headers,
-                params=params,
-            )
-            logger.info("request has been succeeded")
-            logger.info(response.text)
-            return response.text
-        except Exception as ex:
-            logger.error(ex)
-            raise ex
+    semantic_scholar_client = SemanticScholarClient()
+    await semantic_scholar_client.paper_resource.search_paper(search_terms=term)
