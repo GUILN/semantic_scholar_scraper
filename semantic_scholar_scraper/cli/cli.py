@@ -1,3 +1,7 @@
+"""
+cli:
+User interface.
+"""
 import logging
 import sys
 import click
