@@ -61,7 +61,7 @@ class PaperResource:
                     reason="error happened during the request",
                 )
         except httpx.HTTPError as err:
-            raise HttpClientError(reason="status_code={e.statusCode}", client_error=err)
+            raise HttpClientError(reason=f"status_code={str(err)}", client_error=err)
 
         print(result.text)
 
