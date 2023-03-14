@@ -52,8 +52,8 @@ async def search_by_term(
     returns:
         html of the page
     """
-    semantic_scholar_client = SemanticScholarClient()
-    try:
-        await semantic_scholar_client.paper_resource.search_paper(search_terms=term)
-    except HttpClientError as err:
-        logger.error(err.reason)
+    async with SemanticScholarClient() as ss_client:
+        try:
+            await ss_client.paper_resource.search_paper(search_terms=term)
+        except HttpClientError as err:
+            logger.error(err.reason)
