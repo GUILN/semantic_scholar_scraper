@@ -43,6 +43,7 @@ class PaperResource:
         resource_url = path.join(self._base_url, "paper", "search")
         print(resource_url)
         api_formatted_search_terms = "+".join(search_terms.split(" "))
+        print(api_formatted_search_terms)
         query_params = {
             "query": api_formatted_search_terms,
             "limit": 50,

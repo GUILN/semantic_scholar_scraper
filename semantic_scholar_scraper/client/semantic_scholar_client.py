@@ -16,14 +16,16 @@ class SemanticScholarClient:
 
     def __init__(
         self,
+        api_key: str,
         base_url: str = "https://api.semanticscholar.org/graph/v1",
     ):
         self._client: httpx.AsyncClient = None
         self._paper_resource: PaperResource = None
         self._base_url = base_url
+        self._api_key = api_key
 
     async def __aenter__(self):
-        self._client = httpx.AsyncClient()
+        self._client = httpx.AsyncClient(headers={"x-api-key": self._api_key})
         self._paper_resource = PaperResource(
             base_url=self._base_url, client=self._client
         )

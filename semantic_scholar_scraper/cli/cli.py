@@ -24,15 +24,22 @@ logger.setLevel(logging.DEBUG)
     prompt="please specify an search term",
     help="term to be used in the search",
 )
+@click.option(
+    "--key",
+    prompt="please specify the api key",
+    help="semantic scholar's API key",
+)
 @async_cmd
 async def cli(
     term: str,
+    key: str,
 ):
     """
     cli: defines the entry point for the cli tool.
     """
     logger.info(f"searching for {term}...")  # pylint: disable
     await search_by_term(
+        api_key=key,
         term=term,
     )
 
@@ -40,6 +47,7 @@ async def cli(
 
 
 async def search_by_term(
+    api_key: str,
     term: str,
 ) -> str:
     """
@@ -52,7 +60,7 @@ async def search_by_term(
     returns:
         html of the page
     """
-    async with SemanticScholarClient() as ss_client:
+    async with SemanticScholarClient(api_key=api_key) as ss_client:
         try:
             await ss_client.paper_resource.search_paper(search_terms=term)
         except HttpClientError as err:
