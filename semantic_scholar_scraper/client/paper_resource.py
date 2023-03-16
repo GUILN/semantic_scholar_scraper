@@ -32,22 +32,26 @@ class PaperResource:
         self._client = client
         self._base_url = base_url
 
-    async def search_paper(self, search_terms: str) -> List[Paper]:
+    async def search_paper(
+        self,
+        search_terms: str,
+        limit: int = 50,
+        fields: str = "title,authors,url,abstract,citationCount,citationStyles,venue,year",
+    ) -> List[Paper]:
         """
         search_paper
         runs paper search
 
         params:
-            search_terms
+            search_terms => search terms
+            limit => limit results per search
+            fields => desired fields separated by comma
         """
         resource_url = path.join(self._base_url, "paper", "search")
-        print(resource_url)
-        api_formatted_search_terms = "+".join(search_terms.split(" "))
-        print(api_formatted_search_terms)
         query_params = {
-            "query": api_formatted_search_terms,
-            "limit": 50,
-            "fields": "title,authors",
+            "query": search_terms.strip(),
+            "limit": limit,
+            "fields": fields,
         }
         try:
             result = await self._client.get(resource_url, params=query_params)

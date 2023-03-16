@@ -25,7 +25,9 @@ class SemanticScholarClient:
         self._api_key = api_key
 
     async def __aenter__(self):
-        self._client = httpx.AsyncClient(headers={"x-api-key": self._api_key})
+        self._client = httpx.AsyncClient(
+            headers={"x-api-key": self._api_key}, timeout=300
+        )
         self._paper_resource = PaperResource(
             base_url=self._base_url, client=self._client
         )
