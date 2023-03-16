@@ -10,4 +10,4 @@ install_pre_commit:
 	poetry run pre-commit install
 
 live_test:
-	poetry run $(BIN_NAME) --term "session-based recommendation" --key "your key here"
+	poetry run $(BIN_NAME) --term "attention is all you need" --key ""
